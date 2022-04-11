@@ -1,13 +1,12 @@
 const { verify } = require('jsonwebtoken');
 const { User } = require('../model/UserModel')
 
-exports.UserAuthentication = async (req, res) => {
+exports.UserAuthentication = async (req, res, next) => {
     try {
         if (!req.header('Authorization')) {
             return res.status(400).send({ success: false, message: 'Token required' });
         };
-        const token = req.header('Authorization').replace('Bearer ', '');
-        console.info(token);
+        let token = req.header('Authorization').replace('Bearer ', '')
         const decode = verify(token, process.env.JWTSECRET);
         const userdata = await User.findById({ _id: decode._id });
         if (!userdata) {
@@ -15,18 +14,19 @@ exports.UserAuthentication = async (req, res) => {
         }
         req.token = token;
         req.user = userdata;
+        next()
     } catch (e) {
         console.log(e);
         return res.send({ success: false, message: e.message })
     }
 }
 
-exports.RoleAuthenticaion = async (req, res) => {
+exports.RoleAuthenticaion = async (req, res, next) => {
     try {
         if (!req.header('Authorization')) {
             return res.status(400).send({ success: false, message: 'Token required' });
         };
-        const token = req.header('Authorization').substring(7);
+        let token = req.header('Authorization').replace('Bearer ', '')
         const decode = verify(token, process.env.JWTSECRET);
         const userdata = await User.findById({ _id: decode._id }).select('role');
         if (!userdata) {
@@ -35,6 +35,7 @@ exports.RoleAuthenticaion = async (req, res) => {
         if (userdata.role === 0) {
             req.token = token;
             req.user = userdata;
+            next()
         }
         return res.status(400).send({ success: false, message: 'You dont have permission' })
     } catch (e) {

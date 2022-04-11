@@ -6,7 +6,7 @@ const tokenSender = async (user, statusCode, res) => {
     return res.status(statusCode).send({
         success: true,
         message: 'Login Successfull',
-        token: 'Bearer ' + token
+        token: token
     })
 }
 
