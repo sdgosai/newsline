@@ -1,4 +1,4 @@
-const { axios } = require('axios');
+const axios = require('axios');
 
 exports.getAllNews = async (req, res, next) => {
     try {
