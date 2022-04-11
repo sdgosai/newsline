@@ -7,7 +7,7 @@ const newsController = require('../controller/NewsController')
 // API calls ...
 router.get('/allNews', newsController.getAllNews)
 router.post('/searchNews', newsController.searchNews)
-router.get('/news/:category', newsController.categoryNews)
+router.get('/:category', newsController.categoryNews)
 
 // Router export ...
 module.exports = router
