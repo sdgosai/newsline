@@ -87,8 +87,6 @@ exports.categoryNews = async (req, res, next) => {
             news: news
         });
         return res.send(rec)
-        console.log(res);
-        console.log("hello");
     } catch (e) {
         console.log(e);
         return res.send({ success: false, message: e.message })
