@@ -106,3 +106,13 @@ exports.loginController = async (req, res) => {
         return res.send({ success: false, message: e.message })
     }
 }
+
+// User List Controller ...
+exports.userList = async (req, res) => {
+    try {
+        const getsRecord = await User.find({ role: 1 })
+        return res.status(200).send(getsRecord);
+    } catch (err) {
+        return res.status(400).send(err.message);
+    }
+}

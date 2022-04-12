@@ -2,7 +2,7 @@ const router = require('express').Router()
 const multer = require('multer');
 
 // Controller require ...
-const userController = require('../controller/UserController')
+const userController = require('../../controller/UserController')
 
 // Multer file upload ...
 const whitelist = [

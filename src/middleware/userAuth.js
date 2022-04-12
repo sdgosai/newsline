@@ -32,12 +32,12 @@ exports.RoleAuthenticaion = async (req, res, next) => {
         if (!userdata) {
             return res.status(400).send({ success: false, message: "Please enter valid token" });
         }
-        if (userdata.role === 0) {
-            req.token = token;
-            req.user = userdata;
-            next()
+        if (userdata.role !== 0) {
+            return res.status(400).send({ success: false, message: 'You dont have permission' })
         }
-        return res.status(400).send({ success: false, message: 'You dont have permission' })
+        req.token = token;
+        req.user = userdata;
+        next()
     } catch (e) {
         console.log(e);
         return res.send({ success: false, message: e.message })
