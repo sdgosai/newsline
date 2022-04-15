@@ -10,15 +10,17 @@ app.use(express.urlencoded({ extended: true }))
 
 // Require Database ...
 require('./src/db_config/Config')
+
+// Require Middleware
 const { UserAuthentication, RoleAuthenticaion } = require('./src/middleware/userAuth')
+
 // Require routers ...
-const userRouter = require('./src/router/UserRouter')
-app.use('/api/private', userRouter)
-
-
-const newsRouter = require('./src/router/NewsRouter')
-app.all('/api/news/*', UserAuthentication)
-app.use('/api/news', newsRouter)
+const { adminRouter, AuthRouter, publicRouter } = require('./src/router/index')
+app.use('/v1/auth', AuthRouter)
+app.all('/v1/public/*', UserAuthentication)
+app.use('/v1/public', publicRouter)
+app.all('/v2/*', RoleAuthenticaion);
+app.use('/v2', adminRouter)
 
 // Port configure ...
 const port = process.env.PORT
